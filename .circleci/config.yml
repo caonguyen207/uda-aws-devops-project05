@@ -1,0 +1,108 @@
+version: 2.1
+
+orbs:
+  aws-eks: circleci/aws-eks@2.2.0
+  kubernetes: circleci/kubernetes@1.3
+
+aliases:
+  - &aws-cli-image
+    - image: amazon/aws-cli
+  - &python-image
+    - image: python:3.7.3-stretch
+  - &docker-image
+    - image: docker:17.05.0-ce-git
+
+commands:
+  print_pipeline_id:
+    steps:
+      - run:
+          name: Print workflow ID
+          # ${CIRCLE_WORKFLOW_ID:0:7} takes the first 7 chars of a Built-in environment variable
+          command:
+            echo ${CIRCLE_WORKFLOW_ID:0:7}
+
+jobs:
+  check-code-standard:
+    docker: *python-image
+    working_directory: ~/repo
+    steps:
+      - print_pipeline_id
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+            wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 && chmod +x /bin/hadolint
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+      - run:
+          name: Run lint
+          command: |
+            . venv/bin/activate
+            make lint
+  create-docker-image:
+    docker: *docker-image
+    working_directory: ~/repo
+    steps:
+      - print_pipeline_id
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+            - v1-dependencies-
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: false
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt install -y curl
+      - run:
+          name: Create docker image
+          command: |
+            docker build -t ml-traning-${CIRCLE_WORKFLOW_ID:0:7}
+            docker tag ml-traning-${CIRCLE_WORKFLOW_ID:0:7} ${DOCKERHUB_REPO}/ml-traning:${CIRCLE_WORKFLOW_ID:0:7}
+      - run:
+          name: Test docker image
+          command: |
+            docker run ml-traning-${CIRCLE_WORKFLOW_ID:0:7}
+            curl -kv http://localhost
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push ${DOCKERHUB_REPO}/ml-traning:${CIRCLE_WORKFLOW_ID:0:7}
+  test-eks-connection:
+    docker: *docker-image
+    working_directory: ~/repo
+    steps:
+      - print_pipeline_id
+      - checkout
+      - kubernetes/install:
+          kubectl-version: v1.22.0
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: aws-devops
+      - run:
+          command: |
+            kubectl get node -o wide
+          name: Test cluster
+  
+workflows:
+  default:
+    jobs:
+      - check-code-standard
+      - create-docker-image:
+          requires:
+            - check-code-standard
+      - test-eks-connection:
+          requires:
+            - create-docker-image
+      - aws-eks/update-container-image:
+          cluster-name: aws-devops
+          container-image-updates: 'ml-traning=ml-training:${CIRCLE_WORKFLOW_ID:0:7}'
+          resource-name: deployment/ml-training-deployment
+      

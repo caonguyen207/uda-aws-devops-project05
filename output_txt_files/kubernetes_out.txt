@@ -1,0 +1,29 @@
+(.devops) nguyenle@nguyenles-MacBook-Pro uda-aws-devops-project04 % kubectl get pod -o wide                                 
+NAME                                READY   STATUS    RESTARTS      AGE   IP           NODE       NOMINATED NODE   READINESS GATES
+ml-training-5bc864df87-2q4hm        1/1     Running   0             12m   172.17.0.6   minikube   <none>           <none>
+nginx-deployment-6976df7bd9-28dhg   1/1     Running   3 (52d ago)   74d   172.17.0.4   minikube   <none>           <none>
+nginx-deployment-6976df7bd9-t7qsd   1/1     Running   3 (52d ago)   74d   172.17.0.5   minikube   <none>           <none>
+(.devops) nguyenle@nguyenles-MacBook-Pro uda-aws-devops-project04 % kubectl logs ml-training-5bc864df87-2q4hm               
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 741-350-132
+172.17.0.3 - - [04/Sep/2022 09:57:12] "GET / HTTP/1.1" 200 -
+[2022-09-04 09:58:07,741] INFO in app: JSON payload: 
+{'CHAS': {'0': 0}, 'RM': {'0': 6.575}, 'TAX': {'0': 296.0}, 'PTRATIO': {'0': 15.3}, 'B': {'0': 396.9}, 'LSTAT': {'0': 4.98}}
+[2022-09-04 09:58:07,756] INFO in app: Inference payload DataFrame: 
+   CHAS     RM    TAX  PTRATIO      B  LSTAT
+0     0  6.575  296.0     15.3  396.9   4.98
+[2022-09-04 09:58:07,766] INFO in app: Scaling Payload: 
+   CHAS     RM    TAX  PTRATIO      B  LSTAT
+0     0  6.575  296.0     15.3  396.9   4.98
+[2022-09-04 09:58:07,779] INFO in app: Inference payload DataFrame: 
+   CHAS     RM    TAX  PTRATIO      B  LSTAT
+0     0  6.575  296.0     15.3  396.9   4.98
+172.17.0.3 - - [04/Sep/2022 09:58:07] "POST /predict HTTP/1.1" 200 -
+(.devops) nguyenle@nguyenles-MacBook-Pro uda-aws-devops-project04 %

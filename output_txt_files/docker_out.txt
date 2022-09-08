@@ -1,0 +1,40 @@
+(.devops) nguyenle@nguyenles-MacBook-Pro uda-aws-devops-project04 % ./run_docker.sh
+[+] Building 3.1s (10/10) FINISHED                                                                                                                                                        
+ => [internal] load build definition from Dockerfile                                                                                                                                 0.0s
+ => => transferring dockerfile: 37B                                                                                                                                                  0.0s
+ => [internal] load .dockerignore                                                                                                                                                    0.0s
+ => => transferring context: 2B                                                                                                                                                      0.0s
+ => [internal] load metadata for docker.io/library/python:3.7.3-stretch                                                                                                              3.0s
+ => [auth] library/python:pull token for registry-1.docker.io                                                                                                                        0.0s
+ => [1/4] FROM docker.io/library/python:3.7.3-stretch@sha256:205cafadbb7f0c48f2a6d655eb100a9675aa85e6e73958860f488406cce09779                                                        0.0s
+ => [internal] load build context                                                                                                                                                    0.0s
+ => => transferring context: 1.09kB                                                                                                                                                  0.0s
+ => CACHED [2/4] WORKDIR /app                                                                                                                                                        0.0s
+ => CACHED [3/4] COPY . app.py /app/                                                                                                                                                 0.0s
+ => CACHED [4/4] RUN  pip install --upgrade pip &&    pip install -r requirements.txt                                                                                                0.0s
+ => exporting to image                                                                                                                                                               0.0s
+ => => exporting layers                                                                                                                                                              0.0s
+ => => writing image sha256:d2d00a7c384e144e086fc3b85c6d47b0d093f7fe68bd5736ef9277bea4728af8                                                                                         0.0s
+ => => naming to docker.io/library/ml-training:latest                                                                                                                                0.0s
+
+Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them
+REPOSITORY   TAG       IMAGE ID   CREATED   SIZE
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 194-414-639
+172.17.0.1 - - [04/Sep/2022 09:24:40] "GET / HTTP/1.1" 200 -
+[2022-09-04 09:24:43,639] INFO in app: JSON payload: 
+{'CHAS': {'0': 0}, 'RM': {'0': 6.575}, 'TAX': {'0': 296.0}, 'PTRATIO': {'0': 15.3}, 'B': {'0': 396.9}, 'LSTAT': {'0': 4.98}}
+[2022-09-04 09:24:43,658] INFO in app: Inference payload DataFrame: 
+   CHAS     RM    TAX  PTRATIO      B  LSTAT
+0     0  6.575  296.0     15.3  396.9   4.98
+[2022-09-04 09:24:43,671] INFO in app: Scaling Payload: 
+   CHAS     RM    TAX  PTRATIO      B  LSTAT
+0     0  6.575  296.0     15.3  396.9   4.98
+172.17.0.1 - - [04/Sep/2022 09:24:43] "POST /predict HTTP/1.1" 200 -

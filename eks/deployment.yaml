@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-training-deployment
+  namespace: default
+  labels:
+    app: ml-training
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ml-training
+  template:
+    metadata:
+      labels:
+        app: ml-training
+    spec:
+      containers:
+      - name: ml-training
+        image: caonguyenle007/ml-training:latest
+        ports:
+          - containerPort: 80
