@@ -112,7 +112,7 @@ workflows:
             - create-docker-image
       - aws-eks/update-container-image:
           cluster-name: aws-devops
-          container-image-updates: 'ml-traning=ml-training:${CIRCLE_WORKFLOW_ID:0:7}'
+          container-image-updates: 'ml-training=ml-training:${CIRCLE_WORKFLOW_ID:0:7}'
           resource-name: deployment/ml-training-deployment
           requires:
             - create-deployment
