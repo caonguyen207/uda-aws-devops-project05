@@ -67,11 +67,6 @@ jobs:
             docker build -t ml-traning-${CIRCLE_WORKFLOW_ID:0:7} .
             docker tag ml-traning-${CIRCLE_WORKFLOW_ID:0:7} ${DOCKERHUB_REPO}/ml-traning:${CIRCLE_WORKFLOW_ID:0:7}
       - run:
-          name: Test docker image
-          command: |
-            docker run ml-traning-${CIRCLE_WORKFLOW_ID:0:7}
-            curl -kv http://localhost
-      - run:
           name: Publish Docker Image to Docker Hub
           command: |
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
