@@ -78,9 +78,6 @@ workflows:
       - create-docker-image:
           requires:
             - check-code-standard
-      - test-eks-connection:
-          requires:
-            - create-docker-image
       - aws-eks/update-container-image:
           cluster-name: aws-devops
           container-image-updates: 'ml-traning=ml-training:${CIRCLE_WORKFLOW_ID:0:7}'
