@@ -1,0 +1,59 @@
+{
+	"info": {
+		"_postman_id": "cb13142a-5a00-4ec1-b1d2-aad32abff24b",
+		"name": "uda-devops-project05",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Make predict",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \n   \"CHAS\":{  \n      \"0\":0\n   },\n   \"RM\":{  \n      \"0\":6.575\n   },\n   \"TAX\":{  \n      \"0\":296.0\n   },\n   \"PTRATIO\":{  \n      \"0\":15.3\n   },\n   \"B\":{  \n      \"0\":396.9\n   },\n   \"LSTAT\":{  \n      \"0\":4.98\n   }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://abfb4859f20034b2cbdc63636e45388e-1918519616.us-east-1.elb.amazonaws.com/predict",
+					"protocol": "http",
+					"host": [
+						"abfb4859f20034b2cbdc63636e45388e-1918519616",
+						"us-east-1",
+						"elb",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"predict"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Health check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://abfb4859f20034b2cbdc63636e45388e-1918519616.us-east-1.elb.amazonaws.com",
+					"protocol": "http",
+					"host": [
+						"abfb4859f20034b2cbdc63636e45388e-1918519616",
+						"us-east-1",
+						"elb",
+						"amazonaws",
+						"com"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
