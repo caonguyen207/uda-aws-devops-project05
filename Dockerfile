@@ -8,9 +8,6 @@ WORKDIR /app
 # Copy source code to working directory
 COPY . app.py /app/
 
-# Test lint failed
-COPY requirements.txt ./
-
 ## Step 3:
 # Install packages from requirements.txt
 # hadolint ignore=DL3013
