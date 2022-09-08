@@ -1,3 +1,5 @@
+- This project extends from `uda-aws-devops-project04` (https://github.com/caonguyen207/uda-aws-devops-project04)
+
 - To make docker image and run application in locally, run: `sh run_docker.sh`
   - To test request in locally:
     - Open postman or use curl command with: `http://localhost:80`
