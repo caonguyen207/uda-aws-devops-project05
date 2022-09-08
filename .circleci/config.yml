@@ -97,15 +97,18 @@ jobs:
       - run:
           command: |
             aws eks update-kubeconfig --name aws-devops --region $AWS_DEFAULT_REGION --role-arn arn:aws:iam::943814565513:user/udacity-devops
-            kubectl get services
-          name: Test cluster
+          name: Update config
       # - run:
       #     name: Add K8S context
       #     command: |
       #       aws eks update-kubeconfig --region us-east-1 --name aws-devops
-      # - aws-eks/update-kubeconfig-with-authenticator:
-      #     cluster-name: aws-devops
-      #     install-kubectl: true
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: aws-devops
+          install-kubectl: true
+      - run:
+          name: Test service
+          command: |
+            kubectl get services
       # - kubernetes/create-or-update-resource:
       #     get-rollout-status: true
       #     resource-file-path: eks/deployment.yaml
