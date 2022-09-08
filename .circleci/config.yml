@@ -97,7 +97,7 @@ jobs:
       #     cluster-name: aws-devops
       - run:
           command: |
-            aws eks update-kubeconfig --name aws-devops --region $AWS_DEFAULT_REGION --role-arn arn:aws:iam::943814565513:user/udacity-devops
+            aws eks update-kubeconfig --name aws-devops --region $AWS_DEFAULT_REGION
           name: Update config
       # - run:
       #     name: Add K8S context
