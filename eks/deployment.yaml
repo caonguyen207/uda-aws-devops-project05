@@ -15,6 +15,7 @@ spec:
       labels:
         app: ml-training
     spec:
+      serviceAccountName: docker-sa
       containers:
       - name: ml-training
         image: caonguyenle007/ml-training:latest

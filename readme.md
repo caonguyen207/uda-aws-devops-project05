@@ -15,13 +15,13 @@ For testing on EKS clusters.
 - Build, tag and push the first image to Dockerhub.
 
 - Login to EKS cluster and run first deployment also expose LB SVC
-`aws eks update-kubeconfig --region us-east-1 --name uda-aws`
+`aws eks update-kubeconfig --region us-east-1 --name aws-devops`
 
 - Create new secret to pull image from Docker hub to EKS
 `kubectl create secret docker-registry regcred --docker-server=<your-registry-server> --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>`
 
 - Run below commands:
-`kubectl apply -f deployment.yaml`
-`kubectl apply -f service.yaml`
-`kubectl get pod -n default`
-`kubectl get svc -n default`
+`kubectl apply -f eks/deployment.yaml`
+`kubectl apply -f eks/service.yaml`
+`kubectl get pod`
+`kubectl get svc`

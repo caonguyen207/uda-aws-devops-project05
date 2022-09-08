@@ -5,8 +5,8 @@ orbs:
   kubernetes: circleci/kubernetes@1.3
 
 aliases:
-  - &aws-cli-image
-    - image: amazon/aws-cli
+  - &node-base-image
+    - image: circleci/node:13.8.0
   - &python-image
     - image: python:3.7.3-stretch
   - &docker-image
@@ -45,7 +45,7 @@ jobs:
             . venv/bin/activate
             make lint
   create-docker-image:
-    docker: *docker-image
+    docker: *node-base-image
     working_directory: ~/repo
     steps:
       - print_pipeline_id
@@ -91,6 +91,7 @@ jobs:
             kubectl get node -o wide
           name: Test cluster
   
+
 workflows:
   default:
     jobs:
@@ -105,4 +106,6 @@ workflows:
           cluster-name: aws-devops
           container-image-updates: 'ml-traning=ml-training:${CIRCLE_WORKFLOW_ID:0:7}'
           resource-name: deployment/ml-training-deployment
+          requires:
+            - test-eks-connection
       

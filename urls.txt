@@ -1,0 +1,2 @@
+EKS external SVC:
+- http://abfb4859f20034b2cbdc63636e45388e-1918519616.us-east-1.elb.amazonaws.com/
