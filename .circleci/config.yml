@@ -96,23 +96,23 @@ jobs:
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: aws-devops
           install-kubectl: true
-      - kubernetes/create-or-update-resource:
-          resource-file-path: eks/deployment.yaml
-          show-kubectl-command: true
-          resource-name: deployment/ml-training-deployment
+      # - kubernetes/create-or-update-resource:
+      #     resource-file-path: eks/deployment.yaml
+      #     show-kubectl-command: true
+      #     resource-name: deployment/ml-training-deployment
 workflows:
   default:
     jobs:
-      # - check-code-standard
-      # - create-docker-image:
-      #     requires:
-      #       - check-code-standard
-      - create-deployment
-          # requires:
-          #   - create-docker-image
-      # - aws-eks/update-container-image:
-      #     cluster-name: aws-devops
-      #     container-image-updates: 'ml-traning=ml-training:${CIRCLE_WORKFLOW_ID:0:7}'
-      #     resource-name: deployment/ml-training-deployment
-      #     requires:
-      #       - create-deployment
+      - check-code-standard
+      - create-docker-image:
+          requires:
+            - check-code-standard
+      - create-deployment:
+          requires:
+            - create-docker-image
+      - aws-eks/update-container-image:
+          cluster-name: aws-devops
+          container-image-updates: 'ml-traning=ml-training:${CIRCLE_WORKFLOW_ID:0:7}'
+          resource-name: deployment/ml-training-deployment
+          requires:
+            - create-deployment
