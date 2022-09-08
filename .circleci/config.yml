@@ -72,11 +72,15 @@ jobs:
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker push ${DOCKERHUB_REPO}/ml-traning:${CIRCLE_WORKFLOW_ID:0:7}
   test-eks-connection:
-    docker: *docker-image
+    docker: *node-base-image
     working_directory: ~/repo
     steps:
       - print_pipeline_id
       - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt install -y curl
       - kubernetes/install:
           kubectl-version: v1.22.0
       - aws-eks/update-kubeconfig-with-authenticator:
