@@ -64,13 +64,13 @@ jobs:
       - run:
           name: Create docker image
           command: |
-            docker build -t ml-traning-${CIRCLE_WORKFLOW_ID:0:7} .
-            docker tag ml-traning-${CIRCLE_WORKFLOW_ID:0:7} ${DOCKERHUB_REPO}/ml-traning:${CIRCLE_WORKFLOW_ID:0:7}
+            docker build -t ml-training-${CIRCLE_WORKFLOW_ID:0:7} .
+            docker tag ml-training-${CIRCLE_WORKFLOW_ID:0:7} ${DOCKERHUB_REPO}/ml-training:${CIRCLE_WORKFLOW_ID:0:7}
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            docker push ${DOCKERHUB_REPO}/ml-traning:${CIRCLE_WORKFLOW_ID:0:7}
+            docker push ${DOCKERHUB_REPO}/ml-training:${CIRCLE_WORKFLOW_ID:0:7}
  
   create-deployment:
     docker:
