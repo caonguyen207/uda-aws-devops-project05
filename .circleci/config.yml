@@ -86,34 +86,20 @@ jobs:
             unzip awscliv2.zip
             sudo ./aws/install
       - run:
-          name: Set-credential
+          name: set-credential
           command: |
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+            aws configure set aws_session_token $AWS_SESSION_TOKEN
             aws configure set region $AWS_DEFAULT_REGION
-      # - kubernetes/install
       - kubernetes/install-kubectl
-      # - aws-eks/update-kubeconfig-with-authenticator:
-      #     cluster-name: aws-devops
-      - run:
-          command: |
-            aws eks update-kubeconfig --name aws-devops --region $AWS_DEFAULT_REGION
-          name: Update config
-      # - run:
-      #     name: Add K8S context
-      #     command: |
-      #       aws eks update-kubeconfig --region us-east-1 --name aws-devops
-      # - aws-eks/update-kubeconfig-with-authenticator:
-      #     cluster-name: aws-devops
-      #     install-kubectl: true
-      - run:
-          name: Test service
-          command: |
-            kubectl get services
-      # - kubernetes/create-or-update-resource:
-      #     get-rollout-status: true
-      #     resource-file-path: eks/deployment.yaml
-      #     resource-name: deployment/ml-training-deployment
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: aws-devops
+          install-kubectl: true
+      - kubernetes/create-or-update-resource:
+          resource-file-path: eks/deployment.yaml
+          show-kubectl-command: true
+          resource-name: deployment/ml-training-deployment
 workflows:
   default:
     jobs:
